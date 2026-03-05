@@ -5,6 +5,7 @@
   "types": "./backend/register.d.ts",
   "exports": {
     ".": "./backend/register.js",
+    "./backend/middleware": "./backend/middleware.js",
     "./frontend": "./frontend/index.ts",
     "./frontend/*": "./frontend/*"
   },
