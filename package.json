@@ -1,0 +1,27 @@
+{
+  "name": "@vivek-mango/module-auth",
+  "version": "0.1.0",
+  "main": "./backend/register.js",
+  "types": "./backend/register.d.ts",
+  "exports": {
+    ".": "./backend/register.js",
+    "./frontend": "./frontend/index.ts",
+    "./frontend/*": "./frontend/*"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "peerDependencies": {
+    "bcryptjs": ">=2.4.0",
+    "express": ">=4.0.0",
+    "jsonwebtoken": ">=9.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "react-router-dom": ">=6.0.0",
+    "sequelize": ">=6.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
