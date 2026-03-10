@@ -1,4 +1,4 @@
-# @vivek-mango/module-auth
+# @mangoit-solutions/module-auth
 
 Reusable authentication module for Mango module-based apps. Includes:
 - Express auth routes (`/auth/login`, `/auth/refresh`, `/auth/logout`)
@@ -28,7 +28,7 @@ npm install express sequelize jsonwebtoken bcryptjs react react-dom react-router
 ## Backend usage
 
 ```js
-const { register: registerAuth } = require('@vivek-mango/module-auth');
+const { register: registerAuth } = require('@mangoit-solutions/module-auth');
 
 registerAuth({
   app: apiRouter,
@@ -57,7 +57,7 @@ npm install
 ## Frontend usage
 
 ```tsx
-import { AuthProvider, LoginPage, ProtectedRoute } from '@vivek-mango/module-auth/frontend';
+import { AuthProvider, LoginPage, ProtectedRoute } from '@mangoit-solutions/module-auth/frontend';
 
 function App() {
   return (

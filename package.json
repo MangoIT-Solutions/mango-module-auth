@@ -1,5 +1,5 @@
 {
-  "name": "@vivek-mango/module-auth",
+  "name": "@mangoit-solutions/module-auth",
   "version": "0.1.4",
   "main": "./backend/register.js",
   "types": "./backend/register.d.ts",

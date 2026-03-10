@@ -22,7 +22,7 @@ function requireDependency(name) {
 
     const message = error instanceof Error ? error.message : 'Module not found';
     throw new Error(
-      `${message}. Install "${name}" in the host app or run "npm install" inside @vivek-mango/module-auth when using file: links.`,
+      `${message}. Install "${name}" in the host app or run "npm install" inside @mangoit-solutions/module-auth when using file: links.`,
     );
   }
 }
