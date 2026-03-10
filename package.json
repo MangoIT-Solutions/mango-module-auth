@@ -1,6 +1,6 @@
 {
   "name": "@mangoit-solutions/module-auth",
-  "version": "0.1.4",
+  "version": "1.0.0",
   "main": "./backend/register.js",
   "types": "./backend/register.d.ts",
   "exports": {
