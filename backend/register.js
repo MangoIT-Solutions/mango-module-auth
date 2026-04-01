@@ -1,8 +1,8 @@
-const { registerAuthRoutes } = require('./routes/auth.routes');
+const { createAuthRouter } = require('./routes/auth.routes');
 const { setAuthContext } = require('./context');
 
 function register({ app, userModel, roleModel, jwt, models }) {
-  if (!app) {
+  if (!app?.use) {
     throw new Error('Auth module requires an Express router instance');
   }
 
@@ -23,7 +23,7 @@ function register({ app, userModel, roleModel, jwt, models }) {
   };
 
   setAuthContext({ userModel: finalUserModel, roleModel: finalRoleModel, jwt: finalJwt });
-  registerAuthRoutes(app);
+  app.use('/auth', createAuthRouter());
 }
 
 module.exports = {
