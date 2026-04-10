@@ -1,13 +1,17 @@
+interface FrontendEnv {
+  NEXT_PUBLIC_API_URL?: string;
+}
+
 const getApiBaseUrl = () => {
-  if (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
+  const configuredBaseUrl =
+    (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_API_URL : undefined) ||
+    (typeof import.meta !== 'undefined' ? (import.meta.env as FrontendEnv | undefined)?.NEXT_PUBLIC_API_URL : undefined);
+
+  if (configuredBaseUrl) {
+    return configuredBaseUrl.replace(/\/+$/, '');
   }
 
-  if (typeof window !== 'undefined') {
-    return `${window.location.protocol}//${window.location.hostname}:4000/api`;
-  }
-
-  return 'http://localhost:4000/api';
+  return '/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
