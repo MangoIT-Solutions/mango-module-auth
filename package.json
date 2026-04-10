@@ -10,8 +10,8 @@
     "./frontend/*": "./frontend/*"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2"
+    "bcryptjs": ">=2.4.0",
+    "jsonwebtoken": ">=9.0.0"
   },
   "peerDependencies": {
     "bcryptjs": ">=2.4.0",
@@ -24,5 +24,12 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3"
   }
 }
