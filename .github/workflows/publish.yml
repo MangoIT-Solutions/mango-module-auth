@@ -87,6 +87,7 @@ jobs:
 
             const releaseType = readField('releaseType');
             const migrationRequired = readField('migrationRequired');
+            const backfillModules = readField('backfillModules');
             const seedMode = readField('seedMode');
             const notes = readField('notes');
 
@@ -102,6 +103,7 @@ jobs:
             core.setOutput('pr_number', String(pr.number));
             core.setOutput('release_type', releaseType);
             core.setOutput('migration_required', migrationRequired || 'false');
+            core.setOutput('backfill_modules', backfillModules || '');
             core.setOutput('seed_mode', seedMode || 'none');
             core.setOutput('notes', notes || '');
 
@@ -138,6 +140,7 @@ jobs:
         env:
           RELEASE_TYPE: ${{ steps.release_metadata.outputs.release_type }}
           MIGRATION_REQUIRED: ${{ steps.release_metadata.outputs.migration_required }}
+          BACKFILL_MODULES: ${{ steps.release_metadata.outputs.backfill_modules }}
           SEED_MODE: ${{ steps.release_metadata.outputs.seed_mode }}
           RELEASE_NOTES: ${{ steps.release_metadata.outputs.notes }}
 

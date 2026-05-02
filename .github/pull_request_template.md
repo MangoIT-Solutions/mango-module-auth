@@ -7,6 +7,7 @@
 <!-- mango-release:start -->
 releaseType: patch
 migrationRequired: false
+backfillModules:
 seedMode: none
 notes:
 <!-- mango-release:end -->
