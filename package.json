@@ -1,6 +1,6 @@
 {
   "name": "@mangoit-solutions/module-auth",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "mangoRelease": {
     "migrationRequired": false,
     "seedMode": "none",
