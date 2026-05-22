@@ -5,7 +5,7 @@ interface FrontendEnv {
 const getApiBaseUrl = () => {
   const configuredBaseUrl =
     (typeof process !== 'undefined' ? process.env?.NEXT_PUBLIC_API_URL : undefined) ||
-    (typeof import.meta !== 'undefined' ? (import.meta.env as FrontendEnv | undefined)?.NEXT_PUBLIC_API_URL : undefined);
+    (typeof import.meta !== 'undefined' ? ((import.meta as any).env as FrontendEnv | undefined)?.NEXT_PUBLIC_API_URL : undefined);
 
   if (configuredBaseUrl) {
     return configuredBaseUrl.replace(/\/+$/, '');
