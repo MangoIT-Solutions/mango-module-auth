@@ -16,7 +16,11 @@ const css = `
   }
   .mng-login-brand {
     width: 42%;
-    background: linear-gradient(150deg, #9a3412 0%, #c2410c 30%, #ea580c 65%, #f97316 100%);
+    background-color: #0a1628;
+    background-image:
+      radial-gradient(rgba(6,182,212,0.13) 1px, transparent 1px),
+      linear-gradient(150deg, #060d1a 0%, #0a1628 50%, #0d1f3c 100%);
+    background-size: 24px 24px, 100% 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,7 +34,7 @@ const css = `
     position: absolute;
     width: 420px; height: 420px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.06);
+    background: rgba(6,182,212,0.07);
     top: -140px; right: -120px;
   }
   .mng-login-brand::after {
@@ -38,7 +42,7 @@ const css = `
     position: absolute;
     width: 320px; height: 320px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.06);
+    background: rgba(6,182,212,0.05);
     bottom: -100px; left: -100px;
   }
   .mng-login-brand-inner {
@@ -51,17 +55,34 @@ const css = `
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ffffff;
+    background: #f1f5f9;
     padding: 3rem 2rem;
   }
   .mng-login-form-inner {
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(15,23,42,0.08);
+  }
+  .mng-login-input-wrap {
+    position: relative;
+  }
+  .mng-login-input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    color: #94a3b8;
   }
   .mng-login-input {
     display: block;
     width: 100%;
-    padding: 0.625rem 0.75rem;
+    padding: 0.625rem 0.75rem 0.625rem 2.5rem;
     margin-top: 0.375rem;
     border: 1.5px solid #e2e8f0;
     border-radius: 8px;
@@ -74,9 +95,13 @@ const css = `
     font-family: inherit;
   }
   .mng-login-input:focus {
-    border-color: #ea580c;
-    box-shadow: 0 0 0 3px rgba(234,88,12,0.12);
+    border-color: #06b6d4;
+    box-shadow: 0 0 0 3px rgba(6,182,212,0.15);
     background: #ffffff;
+  }
+  .mng-login-input:focus + .mng-login-input-icon svg,
+  .mng-login-input-wrap:focus-within .mng-login-input-icon svg {
+    stroke: #06b6d4;
   }
   .mng-login-input::placeholder {
     color: #94a3b8;
@@ -84,21 +109,22 @@ const css = `
   .mng-login-btn {
     width: 100%;
     padding: 0.75rem;
-    background: linear-gradient(135deg, #c2410c, #ea580c);
+    background: linear-gradient(135deg, #d97706, #f59e0b);
     color: #ffffff;
     border: none;
     border-radius: 8px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.05em;
     transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
     font-family: inherit;
+    text-transform: uppercase;
   }
   .mng-login-btn:hover:not(:disabled) {
     opacity: 0.9;
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(194,65,12,0.35);
+    box-shadow: 0 4px 18px rgba(217,119,6,0.45);
   }
   .mng-login-btn:active:not(:disabled) {
     transform: translateY(0);
@@ -113,6 +139,7 @@ const css = `
   @media (max-width: 820px) {
     .mng-login-root {
       flex-direction: column;
+      background: #f1f5f9;
     }
     .mng-login-brand {
       display: none;
@@ -122,14 +149,35 @@ const css = `
       flex-direction: column;
       align-items: center;
       padding: 2rem 1.5rem 1.5rem;
-      background: linear-gradient(150deg, #9a3412 0%, #c2410c 30%, #ea580c 65%, #f97316 100%);
+      background-color: #0a1628;
+      background-image:
+        radial-gradient(rgba(6,182,212,0.13) 1px, transparent 1px),
+        linear-gradient(150deg, #060d1a 0%, #0a1628 50%, #0d1f3c 100%);
+      background-size: 24px 24px, 100% 100%;
     }
     .mng-login-form-panel {
-      padding: 2rem 1.25rem;
+      padding: 1.5rem 1.25rem 2rem;
       align-items: flex-start;
+    }
+    .mng-login-form-inner {
+      padding: 1.75rem;
     }
   }
 `;
+
+const IconEmail = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2"/>
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+  </svg>
+);
+
+const IconLock = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2"/>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+  </svg>
+);
 
 export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword }: LoginPageProps) {
   const [email, setEmail] = useState('');
@@ -178,27 +226,21 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
         <div className="mng-login-brand">
           <div className="mng-login-brand-inner">
             {logoUrl && (
-              <img
-                src={logoUrl}
-                alt="Logo"
-                style={{ maxHeight: 80, maxWidth: '80%', objectFit: 'contain', marginBottom: '1.75rem', filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.22))' }}
-              />
+              <div style={{ display: 'inline-block', background: '#ffffff', borderRadius: 12, padding: '0.75rem 1.25rem', marginBottom: '1.75rem', boxShadow: '0 4px 24px rgba(6,182,212,0.2)' }}>
+                <img src={logoUrl} alt="Logo" style={{ maxHeight: 56, maxWidth: 200, objectFit: 'contain', display: 'block' }} />
+              </div>
             )}
-            <h2 style={{ color: '#ffffff', fontSize: 30, fontWeight: 700, margin: '0 0 0.75rem', textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
-              Mango MIS
+            <h2 style={{ color: '#ffffff', fontSize: 30, fontWeight: 700, margin: '0 0 0.5rem', letterSpacing: '-0.01em' }}>
+              Mango <span style={{ color: '#06b6d4' }}>MIS</span>
             </h2>
-            <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: 15, margin: 0, lineHeight: 1.7, maxWidth: 260 }}>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, margin: '0 0 2.5rem', lineHeight: 1.7, maxWidth: 240 }}>
               Your all-in-one platform for managing clients, projects, bids, and team performance.
             </p>
-            <div style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {[
-                { icon: '⚡', text: 'Fast & reliable' },
-                { icon: '🔒', text: 'Secure & compliant' },
-                { icon: '📊', text: 'Real-time insights' },
-              ].map(({ icon, text }) => (
-                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
-                  <span style={{ fontSize: 16 }}>{icon}</span>
-                  <span style={{ color: 'rgba(255,255,255,0.78)', fontSize: 13 }}>{text}</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', width: '100%', maxWidth: 220 }}>
+              {['Fast & reliable', 'Secure & compliant', 'Real-time insights'].map((label) => (
+                <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.625rem' }}>
+                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#06b6d4', flexShrink: 0, display: 'inline-block', boxShadow: '0 0 6px rgba(6,182,212,0.6)' }} />
+                  <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: 13 }}>{label}</span>
                 </div>
               ))}
             </div>
@@ -208,9 +250,11 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
         {/* Mobile header strip */}
         <div className="mng-login-mobile-header">
           {logoUrl && (
-            <img src={logoUrl} alt="Logo" style={{ maxHeight: 52, maxWidth: '55%', objectFit: 'contain', marginBottom: '0.625rem' }} />
+            <div style={{ display: 'inline-block', background: '#ffffff', borderRadius: 8, padding: '0.5rem 1rem', marginBottom: '0.625rem' }}>
+              <img src={logoUrl} alt="Logo" style={{ maxHeight: 36, maxWidth: 160, objectFit: 'contain', display: 'block' }} />
+            </div>
           )}
-          <p style={{ color: 'rgba(255,255,255,0.88)', fontSize: 13, margin: 0, fontWeight: 500 }}>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: 13, margin: 0, fontWeight: 500 }}>
             Business management, simplified.
           </p>
         </div>
@@ -218,7 +262,7 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
         {/* Form panel */}
         <div className="mng-login-form-panel">
           <div className="mng-login-form-inner">
-            <h1 style={{ fontSize: 26, fontWeight: 700, color: '#0f172a', margin: '0 0 0.25rem' }}>{title}</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 700, color: '#0f172a', margin: '0 0 0.25rem' }}>{title}</h1>
             <p style={{ color: '#64748b', fontSize: 14, margin: '0 0 1.75rem' }}>Sign in to your account to continue.</p>
 
             {error && (
@@ -232,16 +276,19 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
                 <label htmlFor="email" style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#374151' }}>
                   Email address
                 </label>
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoFocus
-                  placeholder="you@example.com"
-                  className="mng-login-input"
-                />
+                <div className="mng-login-input-wrap">
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    autoFocus
+                    placeholder="you@example.com"
+                    className="mng-login-input"
+                  />
+                  <span className="mng-login-input-icon"><IconEmail /></span>
+                </div>
               </div>
 
               <div style={{ marginBottom: '1rem' }}>
@@ -252,20 +299,23 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
                   <button
                     type="button"
                     onClick={handleForgotPassword}
-                    style={{ background: 'none', border: 'none', color: '#ea580c', cursor: 'pointer', padding: 0, fontSize: 13, fontWeight: 500 }}
+                    style={{ background: 'none', border: 'none', color: '#06b6d4', cursor: 'pointer', padding: 0, fontSize: 13, fontWeight: 500 }}
                   >
                     Forgot password?
                   </button>
                 </div>
-                <input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="••••••••"
-                  className="mng-login-input"
-                />
+                <div className="mng-login-input-wrap">
+                  <input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="••••••••"
+                    className="mng-login-input"
+                  />
+                  <span className="mng-login-input-icon"><IconLock /></span>
+                </div>
               </div>
 
               <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -274,7 +324,7 @@ export function LoginPage({ title = 'Welcome back', onSuccess, onForgotPassword 
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  style={{ width: 16, height: 16, cursor: 'pointer', accentColor: '#ea580c' }}
+                  style={{ width: 16, height: 16, cursor: 'pointer', accentColor: '#06b6d4' }}
                 />
                 <label htmlFor="remember-me" style={{ fontSize: 14, cursor: 'pointer', color: '#4b5563', userSelect: 'none' }}>
                   Remember me
