@@ -31,11 +31,11 @@ async function logout(_req, res, next) {
 async function forgotPassword(req, res, next) {
   try {
     const { email } = req.body;
-    if (!email) {
-      res.status(400).json({ success: false, message: 'Email is required' });
+    if (!email || typeof email !== 'string') {
+      res.status(400).json({ success: false, error: { message: 'Email is required' } });
       return;
     }
-    const appUrl = `${req.protocol}://${req.get('host')}`;
+    const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
     await authService.forgotPassword(email, appUrl);
     res.json({ success: true, message: 'If that email is registered, a reset link has been sent.' });
   } catch (error) {
@@ -45,17 +45,17 @@ async function forgotPassword(req, res, next) {
 
 async function resetPassword(req, res, next) {
   try {
-    const { token, password } = req.body;
-    if (!token || !password) {
-      res.status(400).json({ success: false, message: 'Token and password are required' });
+    const { token, newPassword } = req.body;
+    if (!token || typeof token !== 'string') {
+      res.status(400).json({ success: false, error: { message: 'Token is required' } });
       return;
     }
-    if (password.length < 8) {
-      res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
+    if (!newPassword || typeof newPassword !== 'string' || newPassword.length < 8) {
+      res.status(400).json({ success: false, error: { message: 'Password must be at least 8 characters' } });
       return;
     }
-    await authService.resetPassword(token, password);
-    res.json({ success: true, message: 'Password has been reset successfully' });
+    await authService.resetPassword(token, newPassword);
+    res.json({ success: true, message: 'Password has been reset successfully.' });
   } catch (error) {
     next(error);
   }

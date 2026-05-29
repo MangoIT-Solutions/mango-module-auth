@@ -40,12 +40,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        setUser({
-          userId: payload.userId,
-          email: payload.email,
-          roleId: payload.roleId,
-          roleName: payload.roleName,
-        });
+        const isExpired = payload.exp && payload.exp * 1000 < Date.now();
+        if (isExpired) {
+          clearStoredTokens();
+        } else {
+          setUser({
+            userId: payload.userId,
+            email: payload.email,
+            roleId: payload.roleId,
+            roleName: payload.roleName,
+          });
+        }
       } catch {
         clearStoredTokens();
       }
@@ -61,9 +66,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (response.data) {
-      const storage = rememberMe ? localStorage : sessionStorage;
-      storage.setItem('accessToken', response.data.accessToken);
-      storage.setItem('refreshToken', response.data.refreshToken);
+      clearStoredTokens();
+      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
       const payload = JSON.parse(atob(response.data.accessToken.split('.')[1]));
       setUser({
         userId: payload.userId,
