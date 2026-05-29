@@ -1,7 +1,8 @@
 const { createAuthRouter } = require('./routes/auth.routes');
 const { setAuthContext } = require('./context');
+const { initPasswordResetTokenModel } = require('./models/password-reset-token.model');
 
-function register({ app, userModel, roleModel, jwt, models }) {
+function register({ app, userModel, roleModel, jwt, models, sendEmail }) {
   if (!app?.use) {
     throw new Error('Auth module requires an Express router instance');
   }
@@ -22,7 +23,23 @@ function register({ app, userModel, roleModel, jwt, models }) {
     refreshExpiresIn: jwt?.refreshExpiresIn || '7d',
   };
 
-  setAuthContext({ userModel: finalUserModel, roleModel: finalRoleModel, jwt: finalJwt });
+  // Initialize PasswordResetToken model using the same sequelize instance as the user model
+  const sequelize = finalUserModel?.sequelize;
+  if (sequelize) {
+    try {
+      initPasswordResetTokenModel(sequelize);
+    } catch (err) {
+      console.warn('[auth] Could not initialize PasswordResetToken model:', err.message);
+    }
+  }
+
+  setAuthContext({
+    userModel: finalUserModel,
+    roleModel: finalRoleModel,
+    jwt: finalJwt,
+    sendEmail: sendEmail || null,
+  });
+
   app.use('/auth', createAuthRouter());
 }
 

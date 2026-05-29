@@ -7,6 +7,13 @@ export interface JwtConfig {
   refreshExpiresIn: string;
 }
 
+export interface EmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+  text: string;
+}
+
 export interface AuthUserAttributes {
   id: string;
   email: string;
@@ -27,6 +34,7 @@ export interface AuthContext {
   userModel: AuthUserModel;
   roleModel: AuthRoleModel;
   jwt: JwtConfig;
+  sendEmail?: (opts: EmailOptions) => Promise<void>;
 }
 
 let authContext: AuthContext | null = null;

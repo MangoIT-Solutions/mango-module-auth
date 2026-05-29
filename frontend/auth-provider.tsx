@@ -14,18 +14,29 @@ export interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
   logout: (redirectTo?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+function getStoredToken(key: string): string | null {
+  return localStorage.getItem(key) || sessionStorage.getItem(key);
+}
+
+function clearStoredTokens() {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('refreshToken');
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = getStoredToken('accessToken');
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -36,22 +47,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           roleName: payload.roleName,
         });
       } catch {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        clearStoredTokens();
       }
     }
     setIsLoading(false);
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (email: string, password: string, rememberMe = false) => {
     const response = await apiClient.post<{ accessToken: string; refreshToken: string }>('/auth/login', {
       email,
       password,
+      rememberMe,
     });
 
     if (response.data) {
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.refreshToken);
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem('accessToken', response.data.accessToken);
+      storage.setItem('refreshToken', response.data.refreshToken);
       const payload = JSON.parse(atob(response.data.accessToken.split('.')[1]));
       setUser({
         userId: payload.userId,
@@ -63,8 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback((redirectTo: string = '/auth/login') => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    clearStoredTokens();
     setUser(null);
     if (typeof window !== 'undefined') {
       window.location.href = redirectTo;
