@@ -1,10 +1,10 @@
 {
   "name": "@mangoit-solutions/module-auth",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "mangoRelease": {
-    "migrationRequired": true,
+    "migrationRequired": false,
     "seedMode": "none",
-    "notes": "Add forgot password, reset password, and remember me features"
+    "notes": ""
   },
   "main": "./backend/register.js",
   "types": "./backend/register.d.ts",
