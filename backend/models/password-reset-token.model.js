@@ -1,4 +1,5 @@
 const { DataTypes } = require('sequelize');
+const { randomUUID } = require('crypto');
 
 let PasswordResetToken;
 
@@ -8,7 +9,7 @@ function initPasswordResetTokenModel(sequelize) {
     {
       id: {
         type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+        defaultValue: () => randomUUID(),
         primaryKey: true,
       },
       userId: {
@@ -34,7 +35,7 @@ function initPasswordResetTokenModel(sequelize) {
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
+        defaultValue: () => new Date(),
         field: 'created_at',
       },
     },

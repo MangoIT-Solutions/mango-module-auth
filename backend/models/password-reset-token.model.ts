@@ -1,4 +1,5 @@
 import { DataTypes, Model, type Sequelize } from 'sequelize';
+import { randomUUID } from 'crypto';
 
 class PasswordResetToken extends Model {
   declare id: string;
@@ -13,7 +14,7 @@ export function initPasswordResetTokenModel(sequelize: Sequelize) {
   if (!sequelize.models.PasswordResetToken) {
     PasswordResetToken.init(
       {
-        id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+        id: { type: DataTypes.UUID, defaultValue: () => randomUUID(), primaryKey: true },
         userId: { type: DataTypes.UUID, allowNull: false, field: 'user_id' },
         tokenHash: { type: DataTypes.STRING(64), allowNull: false, field: 'token_hash' },
         expiresAt: { type: DataTypes.DATE, allowNull: false, field: 'expires_at' },

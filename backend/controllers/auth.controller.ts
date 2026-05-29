@@ -36,7 +36,7 @@ export async function forgotPassword(req: Request, res: Response, next: NextFunc
       res.status(400).json({ success: false, error: { message: 'Email is required' } });
       return;
     }
-    const appUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
+    const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
     await authService.forgotPassword(email.trim().toLowerCase(), appUrl);
     // Always respond with success to avoid email enumeration
     res.json({ success: true, message: 'If that email is registered, a reset link has been sent.' });
