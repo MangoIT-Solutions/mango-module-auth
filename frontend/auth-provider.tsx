@@ -35,6 +35,71 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Global fetch interceptor: silently refreshes expired tokens on 401
+  // and retries the original request, or redirects to /login if refresh fails.
+  // This runs throughout the session, not just on page load.
+  useEffect(() => {
+    const originalFetch = window.fetch.bind(window);
+    let pendingRefresh: Promise<string | null> | null = null;
+
+    async function doRefresh(): Promise<string | null> {
+      if (pendingRefresh) return pendingRefresh;
+      pendingRefresh = (async () => {
+        try {
+          const storedRefresh = getStoredToken('refreshToken');
+          if (!storedRefresh) return null;
+          const res = await originalFetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken: storedRefresh }),
+          });
+          if (!res.ok) return null;
+          const body = await res.json();
+          const newAccess: string = body.data?.accessToken;
+          const newRefresh: string = body.data?.refreshToken;
+          if (!newAccess) return null;
+          clearStoredTokens();
+          localStorage.setItem('accessToken', newAccess);
+          if (newRefresh) localStorage.setItem('refreshToken', newRefresh);
+          const payload = JSON.parse(atob(newAccess.split('.')[1]));
+          setUser({ userId: payload.userId, email: payload.email, roleId: payload.roleId, roleName: payload.roleName });
+          return newAccess;
+        } catch {
+          return null;
+        } finally {
+          pendingRefresh = null;
+        }
+      })();
+      return pendingRefresh;
+    }
+
+    (window as typeof window).fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+      const response = await originalFetch(input, init);
+      if (response.status !== 401) return response;
+
+      // Don't intercept auth endpoints themselves — would cause infinite loops
+      const url = typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url;
+      if (url.includes('/auth/refresh') || url.includes('/auth/login')) return response;
+
+      const newToken = await doRefresh();
+      if (!newToken) {
+        clearStoredTokens();
+        setUser(null);
+        window.location.href = '/login';
+        return response;
+      }
+
+      // Retry original request with the new access token
+      const retryHeaders = new Headers((init?.headers as HeadersInit) || {});
+      retryHeaders.set('Authorization', `Bearer ${newToken}`);
+      return originalFetch(input, { ...init, headers: retryHeaders });
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
+
   useEffect(() => {
     async function init() {
       const token = getStoredToken('accessToken');
